@@ -13,7 +13,7 @@ namespace sonrac\Swagger;
  */
 class SwaggerServiceProvider
 {
-    public function register() {
-
+    public function register()
+    {
     }
 }

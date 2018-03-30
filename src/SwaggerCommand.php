@@ -12,7 +12,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Class SwaggerCommand
+ * Class SwaggerCommand.
  *
  * @author Donii Sergii <s.donii@infomir.com>
  */
@@ -67,8 +67,8 @@ class SwaggerCommand extends Command
         $src = $input->getOption('src');
         $stdout = $input->getOption('stdout');
         $debug = $input->getOption('debug');
-        $exclude = implode(',', $input->getOption('exclude') ? : []);
-        $processor = implode(',', $input->getOption('processor') ? : []);
+        $exclude = implode(',', $input->getOption('exclude') ?: []);
+        $processor = implode(',', $input->getOption('processor') ?: []);
         $vendorPath = $this->getVendorDir($input);
         $bootstrap = $this->getBootstrapFile($input);
 
@@ -85,7 +85,6 @@ class SwaggerCommand extends Command
             'output' => $src,
             'bootstrap' => $bootstrap,
                  ] as $name => $value) {
-
             if ($value) {
                 if (is_bool($value)) {
                     $command .= " --{$name} ";
@@ -105,14 +104,15 @@ class SwaggerCommand extends Command
      *
      * @param \Symfony\Component\Console\Input\InputInterface $input
      *
-     * @return string
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return string
      *
      * @author Donii Sergii <s.donii@infomir.com>
      */
-    private function getVendorDir(InputInterface $input) {
-        $vendorPath = $input->getOption('vendor-path') ? : null;
+    private function getVendorDir(InputInterface $input)
+    {
+        $vendorPath = $input->getOption('vendor-path') ?: null;
 
         if (!$vendorPath && $this->app->offsetExists('swagger.vendor_path')) {
             $vendorPath = $this->app['swagger.vendor_path'];
@@ -130,14 +130,15 @@ class SwaggerCommand extends Command
      *
      * @param \Symfony\Component\Console\Input\InputInterface $input
      *
-     * @return string
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return string
      *
      * @author Donii Sergii <s.donii@infomir.com>
      */
-    private function getBootstrapFile(InputInterface $input) {
-        $bootstrap = $input->getOption('swagger.bootstrap') ? : null;
+    private function getBootstrapFile(InputInterface $input)
+    {
+        $bootstrap = $input->getOption('swagger.bootstrap') ?: null;
 
         if (!$bootstrap && $this->app->offsetExists('swagger.bootstrap')) {
             $bootstrap = $this->app['swagger.bootstrap'];
@@ -149,5 +150,4 @@ class SwaggerCommand extends Command
 
         return $bootstrap;
     }
-
 }
