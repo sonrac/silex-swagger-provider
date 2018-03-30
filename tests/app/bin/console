@@ -15,7 +15,10 @@ $helperSet = new Symfony\Component\Console\Helper\HelperSet([
 ]);
 $cli->setHelperSet($helperSet);
 
-$cli->addCommands([new \sonrac\Swagger\SwaggerCommand()]);
+$app['swagger.vendor_path'] = __DIR__.'/../../../vendor';
+$app['swagger.out_dir'] = __DIR__.'/../../out';
+
+$cli->addCommands([new \sonrac\Swagger\SwaggerCommand(null, $app)]);
 
 $app->boot();
 

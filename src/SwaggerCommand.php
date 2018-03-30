@@ -47,7 +47,7 @@ class SwaggerCommand extends Command
     protected function configure()
     {
         $this->setName('swagger:generate')
-            ->addOption('src', 's', InputArgument::OPTIONAL, 'Path to source')
+            ->addOption('source', 's', InputArgument::OPTIONAL, 'Path to source')
             ->addOption('output', 'o', InputArgument::OPTIONAL, 'Path to swagger.json folder for save')
             ->addOption('stdout', 'c', InputArgument::OPTIONAL, 'Print json to console', false)
             ->addOption('api-version', 'ver', InputArgument::OPTIONAL, 'API generated version')
@@ -55,16 +55,22 @@ class SwaggerCommand extends Command
             ->addOption('debug', 'd', InputArgument::OPTIONAL, 'Enable debug mode', false)
             ->addOption('exclude', 'e', InputArgument::IS_ARRAY, 'Exclude paths or files', [])
             ->addOption('vendor-path', 'vp', InputArgument::OPTIONAL, 'Path to vendor dir', [])
-            ->addOption('processor', 'p', InputArgument::IS_ARRAY, 'Additional swagger processors list', []);
+            ->addOption('processor', 'p', InputArgument::IS_ARRAY, 'Additional swagger processors list', [])
+            ->addArgument('path_to_project', InputArgument::OPTIONAL, 'Path to project')
+        ;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $version = $input->getOption('api-version');
-        $src = $input->getOption('src');
+        $src = $input->getOption('source') ? : $input->getArgument('path_to_project');
+        $out = $this->getOutputPath($input);
         $stdout = $input->getOption('stdout');
         $debug = $input->getOption('debug');
         $exclude = implode(',', $input->getOption('exclude') ?: []);
@@ -82,14 +88,14 @@ class SwaggerCommand extends Command
             'exclude' => $exclude,
             'processor' => $processor,
             'debug' => $debug,
-            'output' => $src,
+            'output' => $out,
             'bootstrap' => $bootstrap,
                  ] as $name => $value) {
             if ($value) {
                 if (is_bool($value)) {
                     $command .= " --{$name} ";
                 } else {
-                    $command .= " --{$name} {$value}";
+                    $command .= " --{$name} {$value} {$src}";
                 }
             }
         }
@@ -126,7 +132,7 @@ class SwaggerCommand extends Command
     }
 
     /**
-     * Get vendor dir path.
+     * Get bootstrap file.
      *
      * @param \Symfony\Component\Console\Input\InputInterface $input
      *
@@ -138,7 +144,7 @@ class SwaggerCommand extends Command
      */
     private function getBootstrapFile(InputInterface $input)
     {
-        $bootstrap = $input->getOption('swagger.bootstrap') ?: null;
+        $bootstrap = $input->getOption('bootstrap') ?: null;
 
         if (!$bootstrap && $this->app->offsetExists('swagger.bootstrap')) {
             $bootstrap = $this->app['swagger.bootstrap'];
@@ -149,5 +155,31 @@ class SwaggerCommand extends Command
         }
 
         return $bootstrap;
+    }
+
+    /**
+     * Get bootstrap file.
+     *
+     * @param \Symfony\Component\Console\Input\InputInterface $input
+     *
+     * @return string
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @author Donii Sergii <s.donii@infomir.com>
+     */
+    private function getOutputPath(InputInterface $input)
+    {
+        $out = $input->getOption('output');
+
+        if (!$out && $this->app->offsetExists('swagger.output')) {
+            $out = $this->app['swagger.output'];
+        }
+
+        if ($out && (!is_writable(dirname($out)) || is_dir($out))) {
+            throw new \InvalidArgumentException('Invalid output file path. Set swagger.output in application config');
+        }
+
+        return $out;
     }
 }
