@@ -15,4 +15,4 @@
 [![Daily Downloads](https://poser.pugx.org/sonrac/silex-swagger-provider/d/daily)](https://packagist.org/packages/sonrac/silex-swagger-provider)
 [![composer.lock](https://poser.pugx.org/sonrac/silex-swagger-provider/composerlock)](https://packagist.org/packages/sonrac/silex-swagger-provider)
 
-# Silex swagger provider
+# Silex 2.0 with openapi support swagger provider
