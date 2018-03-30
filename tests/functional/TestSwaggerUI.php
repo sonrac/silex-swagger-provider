@@ -8,7 +8,7 @@ namespace sonrac\Swagger\Tests\Functional;
 use Silex\WebTestCase;
 
 /**
- * Class TestSwaggerUI
+ * Class TestSwaggerUI.
  *
  * @author Donii Sergii <s.donii@infomir.com>
  */
@@ -21,5 +21,4 @@ class TestSwaggerUI extends WebTestCase
     {
         return require __DIR__.'/../app/app.php';
     }
-
 }
