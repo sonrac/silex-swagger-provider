@@ -1,0 +1,22 @@
+#!/usr/bin/env php
+<?php
+require_once __DIR__.'/../../../vendor/autoload.php';
+require_once __DIR__.'/../../../src/SwaggerCommand.php';
+
+use Symfony\Component\Console\Application;
+
+$cli = new Application();
+
+$app = require __DIR__.'/../app.php';
+$app['vendor_path'] = __DIR__.'/../../../vendor';
+
+$helperSet = new Symfony\Component\Console\Helper\HelperSet([
+    'dialog'     => new \Symfony\Component\Console\Helper\QuestionHelper(),
+]);
+$cli->setHelperSet($helperSet);
+
+$cli->addCommands([new \sonrac\Swagger\SwaggerCommand()]);
+
+$app->boot();
+
+$cli->run();
