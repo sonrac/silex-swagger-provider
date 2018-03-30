@@ -56,8 +56,7 @@ class SwaggerCommand extends Command
             ->addOption('exclude', 'e', InputArgument::IS_ARRAY, 'Exclude paths or files', [])
             ->addOption('vendor-path', 'vp', InputArgument::OPTIONAL, 'Path to vendor dir', [])
             ->addOption('processor', 'p', InputArgument::IS_ARRAY, 'Additional swagger processors list', [])
-            ->addArgument('path_to_project', InputArgument::OPTIONAL, 'Path to project')
-        ;
+            ->addArgument('path_to_project', InputArgument::OPTIONAL, 'Path to project');
     }
 
     /**
@@ -69,7 +68,7 @@ class SwaggerCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $version = $input->getOption('api-version');
-        $src = $input->getOption('source') ? : $input->getArgument('path_to_project');
+        $src = $input->getOption('source') ?: $input->getArgument('path_to_project');
         $out = $this->getOutputPath($input);
         $stdout = $input->getOption('stdout');
         $debug = $input->getOption('debug');
@@ -162,9 +161,9 @@ class SwaggerCommand extends Command
      *
      * @param \Symfony\Component\Console\Input\InputInterface $input
      *
-     * @return string
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return string
      *
      * @author Donii Sergii <s.donii@infomir.com>
      */
