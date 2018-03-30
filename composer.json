@@ -13,11 +13,15 @@
         "symfony/browser-kit": "~2.8|~3.0"
     },
     "autoload": {
-        "sonrac\\Swagger\\": "src/"
+        "psr-4": {
+            "sonrac\\Swagger\\": "src/"
+        }
     },
     "autoload-dev": {
-        "sonrac\\Swagger\\Tests\\": "tests/",
-        "sonrac\\Swagger\\Tests\\Functional\\": "tests/functional/"
+        "psr-4": {
+            "sonrac\\Swagger\\Tests\\": "tests/",
+            "sonrac\\Swagger\\Tests\\Functional\\": "tests/functional/"
+        }
     },
     "suggest": {
         "doctrine/migrations": ">=1.0"
